@@ -189,7 +189,7 @@ class GestorCredencialesProxy:
             raise ErrorAutenticacion("Clave maestra incorrecta en proxy.")
         return True
 
-    def añadir_credencial(self, usuario: str, clave_maestra: str, servicio: str, usuario_servicio: str, password: str):
+    def anyadir_credencial(self, usuario: str, clave_maestra: str, servicio: str, usuario_servicio: str, password: str):
         self._autenticar(usuario, clave_maestra)
         return self._gestor.añadir_credencial(clave_maestra, servicio, usuario_servicio, password)
 
