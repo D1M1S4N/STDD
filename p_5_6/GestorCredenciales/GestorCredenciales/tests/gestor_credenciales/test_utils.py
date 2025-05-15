@@ -1,5 +1,4 @@
 import unittest
-#from src.gestor_credenciales.utils import saludar
 
 import os
 import sys

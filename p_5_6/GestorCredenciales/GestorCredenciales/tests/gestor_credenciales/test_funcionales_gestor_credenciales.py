@@ -16,55 +16,6 @@ from hypothesis import given
 from hypothesis.strategies import text
 
 
-"""class TestFuncionalesGestorCredenciales(unittest.TestCase):
-    def setUp(self):
-        self.gestor = GestorCredenciales("claveMaestraSegura123!",cifrador=CifradorBCrypt(),validador=ValidadorPasswordSeguro(),logger=LoggerSeguro())
-
-    # Tests funcionales
-    def test_añadir_credencial(self):
-        # Credenciales válidas
-        self.gestor.añadir_credencial("claveMaestraSegura123!", "GitHub", "user1", "Password123!")
-
-        # Verificar que las credenciales fueron añadidas correctamente
-        password_encriptada = self.gestor.obtener_password("claveMaestraSegura123!", "GitHub", "user1")
-        self.assertIsNotNone(password_encriptada)  # La contraseña cifrada no debe ser None
-
-        # Intentar añadir con una clave maestra incorrecta
-        with self.assertRaises(ErrorAutenticacion):
-            self.gestor.añadir_credencial("claveIncorrecta", "GitHub", "user2", "Password123!")
-
-
-    def test_recuperar_credencial(self):
-        # Añadir una credencial primero
-        self.gestor.añadir_credencial("claveMaestraSegura123!", "GitHub", "user1", "Password123!")
-
-        # Recuperar la contraseña encriptada para ese servicio y usuario
-        password_encriptada = self.gestor.obtener_password("claveMaestraSegura123!", "GitHub", "user1")
-        self.assertIsNotNone(password_encriptada)  # Verificar que se obtuvo la contraseña
-
-        # Intentar recuperar una contraseña con una clave maestra incorrecta
-        with self.assertRaises(ErrorAutenticacion):
-            self.gestor.obtener_password("claveIncorrecta", "GitHub", "user1")
-        
-        # Intentar recuperar una contraseña para un servicio que no existe
-        with self.assertRaises(KeyError):
-            self.gestor.obtener_password("claveMaestraSegura123!", "NonExistentService", "user1")
-
-
-    def test_listar_servicios(self):
-        # Añadir algunas credenciales
-        self.gestor.añadir_credencial("claveMaestraSegura123!", "GitHub", "user1", "Password123!")
-        self.gestor.añadir_credencial("claveMaestraSegura123!", "Twitter", "user2", "Password123!")
-
-        # Listar los servicios y verificar que "GitHub" y "Twitter" estén presentes
-        servicios = self.gestor.listar_servicios("claveMaestraSegura123!")
-        self.assertIn("GitHub", servicios)
-        self.assertIn("Twitter", servicios)
-
-        # Intentar listar los servicios con una clave maestra incorrecta
-        with self.assertRaises(ErrorAutenticacion):
-            self.gestor.listar_servicios("claveIncorrecta")"""
-
 class TestFuncionalesGestorCredenciales(unittest.TestCase):
     def setUp(self):
         usuarios_roles = {
@@ -76,8 +27,8 @@ class TestFuncionalesGestorCredenciales(unittest.TestCase):
             "user1": "claveMaestraSegura123!"
         }
         fabrica = SecureStrategyFactory(usuarios_roles)
-        cifrador = fabrica.obtener_cifrador("admin")
-        validador = fabrica.obtener_validador("admin")
+        cifrador = fabrica.obtener_cifrador()
+        validador = fabrica.obtener_validador()
         logger = LoggerSeguro()
         gestor = GestorCredenciales("claveMaestraSegura123!", cifrador, validador, logger)
         self.proxy = GestorCredencialesProxy(gestor, usuarios_claves)

@@ -40,28 +40,18 @@ class IValidadorPassword(ABC):
 # ---------------------------
 # Secure Strategy Factory
 # ---------------------------
-
+            
 class SecureStrategyFactory:
     def __init__(self, usuario_roles: dict):
         # Diccionario con usuario -> rol o permisos
         self.usuario_roles = usuario_roles
 
-    def obtener_cifrador(self, usuario: str) -> ICifrador:
-        rol = self.usuario_roles.get(usuario, "usuario")
-        if rol == "admin":
-            return CifradorBCrypt()  # cifrado fuerte para admin
-        else:
-            # Por simplicidad, devolvemos también BCrypt para usuarios normales
-            return CifradorBCrypt()
-        # Podrías agregar más tipos de cifradores según rol
+    def obtener_cifrador(self) -> ICifrador:
+        return CifradorBCrypt()  # cifrado fuerte para admin
 
-    def obtener_validador(self, usuario: str) -> IValidadorPassword:
-        rol = self.usuario_roles.get(usuario, "usuario")
-        if rol == "admin":
-            return ValidadorPasswordSeguro()
-        else:
-            # Para usuarios normales podrías poner un validador menos estricto (ejemplo)
-            return ValidadorPasswordSeguro()
+    def obtener_validador(self) -> IValidadorPassword:
+        return ValidadorPasswordSeguro()
+
 
 # ---------------------------
 # Implementaciones concretas
@@ -145,10 +135,10 @@ class GestorCredenciales:
     def _autenticado(self, clave_maestra: str, usuario: str) -> bool:
         if self._cifrador.verificar(clave_maestra, self._clave_maestra_hashed):
             return True
-        self._logger.registrar("WARNING", usuario, f"Acceso denegado por clave inválida.")
+        self._logger.registrar("WARNING", usuario, "Acceso denegado por clave invalida.")
         raise ErrorAutenticacion("Clave maestra incorrecta.")
 
-    def añadir_credencial(self, clave_maestra: str, servicio: str, usuario: str, password: str):
+    def anyadir_credencial(self, clave_maestra: str, servicio: str, usuario: str, password: str):
         self._autenticado(clave_maestra, usuario)
         self._validador.validar(servicio, usuario, password)
         password_encriptada = self._cifrador.hash(password)
